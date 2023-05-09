@@ -1,0 +1,39 @@
+nav {
+  position: sticky;
+  top: calc(var(--header__height) + 15px);
+}
+
+nav ul li {
+  position: relative;
+  list-style: none;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: color .3s;
+}
+
+nav ul li:hover {
+  color: #fff;
+}
+
+nav ul li:before {
+  width: 0;
+  content: '';
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: var(--primary__color);
+  transition: width .5s;
+}
+
+nav ul li:hover:before {
+  width: 100%;
+}
+
+nav ul li.active {
+  color: #fff;
+}
+
+nav ul li.active:before {
+  width: 100%;
+}

@@ -1,0 +1,10 @@
+{
+  "name": "cats",
+  "type": "module",
+  "scripts": {
+    "start": "live-server --port=8000 --entry-file=index.html"
+  },
+  "dependencies": {
+    "live-server": "1.2.1"
+  }
+}

@@ -1,0 +1,48 @@
+.scroll-off {
+  overflow: hidden;
+}
+
+.wrap {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.loader_list {
+  position: fixed;
+  top: var(--header__height);
+  left: 182px;
+  height: calc(100vh - var(--header__height) - 40px);
+  background: var(--bg__color);
+  z-index: 1;
+}
+
+.loader_list:before {
+  content: 'E-SHOP';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 80px;
+  color: #000;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+.loader_list span {
+  animation: loader_list 1.5s cubic-bezier(.47,.35,.22,.59) infinite .1s;
+}
+
+@keyframes loader_list {
+  0% {
+    background-position-x: 100%;
+  }
+  50% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: -100%;
+  }
+}
