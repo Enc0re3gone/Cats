@@ -1,21 +1,37 @@
 import api from "./plugins/api.js";
 import stringToHtml from "./plugins/stringToHtml.js";
-import product_card from "./components/product_card.js";
-import loader from "./components/loader.js";
 import initNav from "./handlers/nav.js"
+import { router } from "./router.js";
 
-const wrap = document.querySelector('article .wrap')
+const observer = new MutationObserver(mutations => {
+  document.querySelectorAll('a').forEach(link => {
+    const href = link.getAttribute('href')
+    if (href) {
+      link.onclick = event => {
+        event.preventDefault()
+        router.go(href)
+      }
+    }
+  })
+})
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+})
+
+router.dispatch(location.pathname)
 
 window.addEventListener("load", async () => {
   const loader = document.querySelector('.loader')
-  await getCategories();
-  getProducts('products')
+  await getCategories()
 
   setTimeout(() => {
     loader.classList.add('hide')
     setTimeout(() => {
       document.body.classList.remove('scroll-off');
       loader.remove()
+      document.dispatchEvent(new CustomEvent('preload-removed'))
     }, 350)
   }, 2000)
 });
@@ -32,32 +48,10 @@ async function getCategories() {
         })
 
         initNav();
-      } else {
-        wrap.innerHTML = 'Список пуст'
       }
     })
+    .catch(e => console.error(e.message))
 }
-
-function getProducts(query) {
-  wrap.innerHTML = ''
-  wrap.append(loader())
-
-  api.get({query})
-    .then(res => {
-      if (res.length) {
-        document.querySelector('.wrap').innerHTML = ''
-
-        res.forEach(product => {
-          wrap.append(product_card(product))
-        })
-      } else if (query === 'products' && !res.length) {
-        getProducts('products')
-      } else {
-        wrap.innerHTML = 'Список пуст'
-      }
-    })
-}
-
 
 //Category change handler
 document.addEventListener('change_category', data => {
@@ -72,10 +66,8 @@ document.addEventListener('change_category', data => {
     }
   })
 
-  if (category === 'all') {
-    getProducts('products')
-  } else {
-    getProducts(`products/category/${category}`)
-  }
+  document.dispatchEvent(new CustomEvent('getProducts', {
+    detail: category === 'all' ? 'products' : `products/category/${category}`
+  }))
 })
 
