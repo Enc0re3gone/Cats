@@ -1,0 +1,8 @@
+{
+  "/": {
+    "controller": "/pages/home/index.js"
+  },
+  "/product/:id": {
+    "controller": "/pages/product/index.js"
+  }
+}
