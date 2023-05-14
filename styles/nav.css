@@ -11,6 +11,11 @@ nav ul li {
   transition: color .3s;
 }
 
+nav ul li a {
+  color: inherit;
+  text-decoration: none;
+}
+
 nav ul li:hover {
   color: #fff;
 }
