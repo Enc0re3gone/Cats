@@ -2,6 +2,9 @@ import api from "./plugins/api.js";
 import stringToHtml from "./plugins/stringToHtml.js";
 import { addCategoryChangeHandler, setActiveCategory } from "./handlers/nav.js"
 import { router } from "./router.js";
+import { localStorage } from "./plugins/storage.js";
+
+window.$localStorage = localStorage
 
 const observer = new MutationObserver(mutations => {
   document.querySelectorAll('a').forEach(link => {
@@ -31,6 +34,11 @@ window.addEventListener("load", async () => {
     setTimeout(() => {
       document.body.classList.remove('scroll-off');
       loader.remove()
+
+      if ($localStorage.get('products').length) {
+        document.querySelector('header .cart').dataset.content = $localStorage.get('products').length
+      }
+
       document.dispatchEvent(new CustomEvent('preload-removed'))
     }, 350)
   }, 2000)
