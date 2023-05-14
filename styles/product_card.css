@@ -2,8 +2,6 @@
   display: flex;
   flex-direction: column;
   width: calc((100% - 60px) / 4);
-  cursor: pointer;
-  text-decoration: none;
 }
 
 .product__card:hover .product__card-image img {
@@ -34,7 +32,7 @@
   flex: 1;
   color: #fff;
   padding: 10px 16px;
-  background: var(--card_card__color);
+  background: var(--card__color);
 }
 
 .product__card .product__card-body h3 {
