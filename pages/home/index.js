@@ -1,6 +1,7 @@
 import api from "../../plugins/api.js";
 import product_card from "../../components/product_card.js";
 import loader from "../../components/loader.js";
+import { setActiveCategory } from "../../handlers/nav.js";
 
 const wrap = document.querySelector('article .wrap')
 
@@ -24,4 +25,9 @@ async function getProducts(query) {
     })
 }
 
-getProducts('products')
+if (location?.params?.category) {
+  document.addEventListener('preload-removed', () => setActiveCategory(location.params.category))
+  getProducts(`products/category/${location.params.category}`)
+} else {
+  getProducts('products')
+}
