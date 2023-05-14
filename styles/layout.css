@@ -60,6 +60,9 @@ body {
 header {
   position: fixed;
   top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: var(--header__height);
   padding: 10px 16px;
