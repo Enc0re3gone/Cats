@@ -35,8 +35,9 @@
   background: var(--card__color);
 }
 
-.product__card .product__card-body h3 {
+.product__card .product__card-body h3 a {
   color: var(--primary__color);
+  text-decoration: none;
 }
 
 .product__card .product__card-body p {
@@ -48,6 +49,6 @@
   display: flex;
   flex: 1;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 15px;
 }
