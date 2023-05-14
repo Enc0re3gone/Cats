@@ -1,6 +1,6 @@
 import api from "./plugins/api.js";
 import stringToHtml from "./plugins/stringToHtml.js";
-import initNav from "./handlers/nav.js"
+import { addCategoryChangeHandler, setActiveCategory } from "./handlers/nav.js"
 import { router } from "./router.js";
 
 const observer = new MutationObserver(mutations => {
@@ -40,14 +40,14 @@ async function getCategories() {
   const navElm = document.querySelector('nav ul')
   await api.get({query:'products/categories'})
     .then(res => {
-      navElm.append(stringToHtml(`<li class="active">All</li>`))
+      navElm.append(stringToHtml(`<li class="active" id="all"><a href="/">All</a></li>`))
 
       if (res.length) {
         res.forEach(cat => {
-          navElm.append(stringToHtml(`<li>${cat.charAt(0).toUpperCase() + cat.slice(1)}</li>`))
+          navElm.append(stringToHtml(`<li id="${cat}"><a href="/${cat}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</a></li>`))
         })
 
-        initNav();
+        addCategoryChangeHandler()
       }
     })
     .catch(e => console.error(e.message))
@@ -58,13 +58,7 @@ document.addEventListener('change_category', data => {
   const category = data.detail.toLowerCase();
   if (!category) return void 0;
 
-  document.querySelectorAll('aside nav ul li').forEach(cat => {
-    if (cat.innerHTML.toLowerCase() !== category) {
-      cat.classList.remove('active')
-    } else {
-      cat.classList.add('active')
-    }
-  })
+  setActiveCategory(category)
 
   document.dispatchEvent(new CustomEvent('getProducts', {
     detail: category === 'all' ? 'products' : `products/category/${category}`
