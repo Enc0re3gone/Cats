@@ -1,40 +1,32 @@
-import routes from "./routes.json" assert { type: "json" };
+class Router {
+  routes = []
 
-function createScript (route, path) {
-  const script = document.createElement('script')
-  script.async = true
-  script.dataset.path = path
-  script.src = `${route.controller}`
-  script.type = 'module'
+  add(route, cb) {
+    this.routes[route.replace(/:([^\/]+)/g, "(?<$1>[^\\/]+)")] = [cb, {}]
+  }
 
-  return script;
-}
-
-function findScript (path) {
-  document.head.querySelectorAll('script')
-    .forEach(script => {
-      if (script.dataset.path === path) {
-        return true
-      }
-    })
-  return false
-}
-
-export const router = {
-  go: (uri) => {
+  go(uri) {
     history.pushState(null, "", uri)
-    router.dispatch(uri)
-  },
-  dispatch: (uri) => {
-    for (let route in routes) {
-      const matched = uri.match(route.replace(/:([^\/]+)/g, "(?<$1>[^\\/]+)"))
+    this.dispatch(uri)
+  }
+
+  dispatch(uri) {
+    for (let route in this.routes) {
+      const matched = uri.match(route)
+
       if (matched && matched[0] === matched.input) {
-        if (!findScript(route)) {
-          document.head.append(createScript(routes[route], route))
-          location.params = matched.groups;
+        let params = this.routes[route][1];
+
+        if (matched.groups) {
+          for (let param in matched.groups) {
+            params[param] = matched.groups[param]
+          }
         }
-        break;
+
+        this.routes[route][0](params)
       }
     }
   }
 }
+
+export const router = new Router()

@@ -1,10 +1,21 @@
+import routes from "./routes.json" assert { type: "json" };
 import api from "./plugins/api.js";
 import stringToHtml from "./plugins/stringToHtml.js";
-import { addCategoryChangeHandler, setActiveCategory } from "./handlers/nav.js"
 import { router } from "./router.js";
 import { localStorage } from "./plugins/storage.js";
 
 window.$localStorage = localStorage
+
+window.addEventListener("load", async () => {
+  await getCategories()
+
+  for (let route in routes) {
+    let controller = await import(routes[route].controller)
+    router.add(route, controller.default)
+  }
+
+  router.dispatch(location.pathname)
+});
 
 const observer = new MutationObserver(mutations => {
   document.querySelectorAll('a').forEach(link => {
@@ -23,12 +34,6 @@ observer.observe(document.body, {
   subtree: true
 })
 
-router.dispatch(location.pathname)
-
-window.addEventListener("load", async () => {
-  await getCategories()
-});
-
 async function getCategories() {
   const navElm = document.querySelector('nav ul')
   await api.get({query:'products/categories'})
@@ -39,22 +44,8 @@ async function getCategories() {
         res.forEach(cat => {
           navElm.append(stringToHtml(`<li id="${cat}"><a href="/${cat}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</a></li>`))
         })
-
-        addCategoryChangeHandler()
       }
     })
     .catch(e => console.error(e.message))
 }
-
-//Category change handler
-document.addEventListener('change_category', data => {
-  const category = data.detail.toLowerCase();
-  if (!category) return void 0;
-
-  setActiveCategory(category)
-
-  document.dispatchEvent(new CustomEvent('getProducts', {
-    detail: category === 'all' ? 'products' : `products/category/${category}`
-  }))
-})
 

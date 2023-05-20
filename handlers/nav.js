@@ -1,14 +1,7 @@
-function addCategoryChangeHandler () {
-  document.querySelectorAll('aside nav ul li').forEach(li => {
-    li.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('change_category', {detail: li.id}))
-    })
-  })
-}
-
 function setActiveCategory(category) {
+  console.log(category)
   document.querySelectorAll('aside nav ul li').forEach(cat => {
-    if (cat.id.toLowerCase() !== category.replace('%20', ' ')) {
+    if (cat.id.toLowerCase() !== (category.search('%20') !== -1 ? category.replace('$20', ' ') : category)) {
       cat.classList.remove('active')
     } else {
       cat.classList.add('active')
@@ -16,4 +9,4 @@ function setActiveCategory(category) {
   })
 }
 
-export { addCategoryChangeHandler, setActiveCategory }
+export { setActiveCategory }
