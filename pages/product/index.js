@@ -1,6 +1,7 @@
 import api from "../../plugins/api.js";
 import loader from "../../components/loader.js";
 import { createProduct } from "../../components/product.js";
+import { createBreadcrumbs } from "../../components/breadcrumbs.js";
 
 const wrap = document.querySelector('main article .wrap')
 
@@ -10,8 +11,11 @@ export default function({id}) {
 
   api.get({query: `products/${id}`}).then(product => {
     if (product.id) {
-      wrap.innerHTML = '';
-      wrap.append(createProduct(product))
+      wrap.innerHTML = '<div class="product__wrap"></div>';
+      let product__wrap = document.querySelector('.product__wrap')
+      product__wrap.append(createBreadcrumbs([product.category, product.title]))
+
+      product__wrap.append(createProduct(product))
 
       let rating = 0
       let star = document.querySelector('.star')

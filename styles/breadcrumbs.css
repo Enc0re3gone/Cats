@@ -1,0 +1,15 @@
+.breadcrumbs {
+  margin-bottom: 20px;
+}
+
+.breadcrumbs a,
+.breadcrumbs span{
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--light_blue__color);
+  transition: color .3s;
+}
+
+.breadcrumbs a:hover:not(:last-child) {
+  color: var(--primary__color);
+}
