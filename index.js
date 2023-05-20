@@ -42,7 +42,9 @@ async function getCategories() {
 
       if (res.length) {
         res.forEach(cat => {
-          navElm.append(stringToHtml(`<li id="${cat}"><a href="/${cat}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</a></li>`))
+          navElm.append(
+            stringToHtml(`<li id="${cat}"><a href="/category/${cat}">${cat.charAt(0).toUpperCase() + cat.slice(1)}</a></li>`)
+          )
         })
       }
     })
