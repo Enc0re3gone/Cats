@@ -18,7 +18,7 @@ window.addEventListener("load", async () => {
 
   const productsLength = $localStorage.get('products').length || 0
 
-  document.querySelector('.cart').dataset.content = productsLength > 9 ? '9+' : productsLength
+  document.querySelector('.icon-cart').dataset.content = productsLength > 9 ? '9+' : productsLength
 });
 
 const observer = new MutationObserver(mutations => {
