@@ -3,15 +3,15 @@ import loader from "../../components/loader.js";
 import { createProduct } from "../../components/product.js";
 import { createBreadcrumbs } from "../../components/breadcrumbs.js";
 
-const wrap = document.querySelector('main article .wrap')
+const article = document.querySelector('article')
 
 export default function({id}) {
-  wrap.innerHTML = '';
-  wrap.append(loader())
+  article.innerHTML = '';
+  article.append(loader())
 
   api.get({query: `products/${id}`}).then(product => {
     if (product.id) {
-      wrap.innerHTML = '<div class="product__wrap"></div>';
+      article.innerHTML = '<div class="product__wrap"></div>';
       let product__wrap = document.querySelector('.product__wrap')
       product__wrap.append(createBreadcrumbs([product.category, product.title]))
 

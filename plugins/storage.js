@@ -5,7 +5,6 @@ export const localStorage = {
   },
   set: (item, value) => {
     value = JSON.stringify(value)
-    console.log(value)
     window.localStorage.setItem(item, value)
   }
 }

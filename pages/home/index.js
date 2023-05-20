@@ -3,10 +3,9 @@ import product_card from "../../components/product_card.js";
 import loader from "../../components/loader.js";
 import { setActiveCategory } from "../../handlers/nav.js";
 
-const wrap = document.querySelector('article .wrap')
+const article = document.querySelector('article')
 
 export default function(params) {
-  console.log(params)
   if (params?.category) {
     getProducts(`products/category/${params.category}`)
     setActiveCategory(params.category)
@@ -15,38 +14,39 @@ export default function(params) {
     setActiveCategory('all')
   }
 
-  function setProductsForCart(id, action) {
+  function setProductsForCart(product, action) {
     const products = $localStorage.get('products') || []
 
     if (action === 'add') {
-      products.push(id)
+      products.push(product)
     } else if (action === 'remove') {
-      products.splice(products.findIndex(product => product === id), 1)
+      products.splice(products.findIndex(p => p.id === product.id), 1)
     }
 
     $localStorage.set('products', products)
     document.querySelector('header .cart').dataset.content = products.length > 9 ? '9+' : products.length
   }
 
-  function productBtnHandler(id, btn) {
+  function productBtnHandler(product, btn) {
     btn.classList.toggle('secondary')
     if (btn.innerHTML === 'Добавить') {
-      setProductsForCart(id, 'add')
+      setProductsForCart(product, 'add')
       btn.innerHTML = 'Убрать'
     } else {
       btn.innerHTML = 'Добавить'
-      setProductsForCart(id, 'remove')
+      setProductsForCart(product, 'remove')
     }
   }
 
-  async function getProducts(query) {
-    wrap.innerHTML = ''
-    wrap.append(loader())
+  function getProducts(query) {
+    article.innerHTML = ''
+    article.append(loader())
 
-    await api.get({query})
+    api.get({query})
       .then(res => {
         if (res.length) {
-          document.querySelector('.wrap').innerHTML = ''
+          article.innerHTML = '<div class="wrap"></div>'
+          let wrap = document.querySelector('.wrap')
 
           const productsFromStorage = $localStorage.get('products')
 
@@ -59,10 +59,10 @@ export default function(params) {
               product_cardBtn.innerHTML = 'Убрать'
             }
 
-            product_cardBtn.addEventListener('click', () => productBtnHandler(product.id, product_cardBtn))
+            product_cardBtn.addEventListener('click', () => productBtnHandler(product, product_cardBtn))
           })
         } else {
-          wrap.innerHTML = 'Список пуст'
+          article.innerHTML = 'Список пуст'
         }
       })
   }

@@ -1,5 +1,4 @@
 function setActiveCategory(category) {
-  console.log(category)
   document.querySelectorAll('aside nav ul li').forEach(cat => {
     if (cat.id.toLowerCase() !== (category.search('%20') !== -1 ? category.replace('$20', ' ') : category)) {
       cat.classList.remove('active')

@@ -65,7 +65,7 @@ header {
   align-items: center;
   width: 100%;
   height: var(--header__height);
-  padding: 10px 16px;
+  padding: 10px 30px 10px 16px;
   z-index: 3;
 }
 
