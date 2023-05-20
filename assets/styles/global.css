@@ -35,11 +35,11 @@
   animation: loader_list 1.5s cubic-bezier(.47,.35,.22,.59) infinite .1s;
 }
 
-.cart {
+.icon-cart {
   position: relative;
 }
 
-.cart:before {
+.icon-cart:before {
   content: attr(data-content);
   position: absolute;
   top: -3px;
@@ -55,7 +55,7 @@
   color: #fff;
 }
 
-.cart svg {
+.icon-cart svg {
   width: 24px;
   height: 24px;
 }
