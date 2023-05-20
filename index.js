@@ -26,22 +26,7 @@ observer.observe(document.body, {
 router.dispatch(location.pathname)
 
 window.addEventListener("load", async () => {
-  const loader = document.querySelector('.loader')
   await getCategories()
-
-  setTimeout(() => {
-    loader.classList.add('hide')
-    setTimeout(() => {
-      document.body.classList.remove('scroll-off');
-      loader.remove()
-
-      if ($localStorage.get('products').length) {
-        document.querySelector('header .cart').dataset.content = $localStorage.get('products').length
-      }
-
-      document.dispatchEvent(new CustomEvent('preload-removed'))
-    }, 350)
-  }, 2000)
 });
 
 async function getCategories() {
